@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#10B981" />
+  <title>モイスティーヌ武蔵ヶ丘サロン｜美容アンケート</title>
+
+  <style>
+    :root{
+      --bg: #F5F6F8;
+      --card: rgba(255,255,255,.92);
+      --text:#0F172A;
+      --muted:#64748B;
+      --border: rgba(15, 23, 42, .08);
+      --shadow: 0 18px 40px rgba(15,23,42,.10);
+      --shadow2: 0 10px 22px rgba(15,23,42,.08);
+      --radius: 18px;
+
+      --accent: #10B981;    /* emerald */
+      --accent2:#059669;
+      --accentSoft: rgba(16,185,129,.12);
+      --danger:#EF4444;
+      --chipBg:#FFFFFF;
+      --chipBorder: rgba(15,23,42,.10);
+    }
+
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 0%, rgba(16,185,129,.10), transparent 55%),
+        radial-gradient(900px 600px at 95% 10%, rgba(2,132,199,.08), transparent 55%),
+        var(--bg);
+      padding: 12px 12px calc(118px + env(safe-area-inset-bottom));
+      display:flex;
+      justify-content:center;
+    }
+
+    .wrap{ width:100%; max-width: 620px; }
+
+    /* ===== App Bar（かっこいい・薄い） ===== */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      padding: 10px 0 12px;
+      backdrop-filter: blur(12px);
+      background: rgba(245,246,248,.75);
+    }
+    .topbar__inner{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.78);
+      border-radius: 16px;
+      box-shadow: var(--shadow2);
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      gap: 12px;
+    }
+    .mark{
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(16,185,129,.14);
+      flex: 0 0 auto;
+    }
+    .titles{ min-width:0; flex: 1; }
+    .title{
+      margin:0;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .subtitle{
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.2;
+    }
+    .pill{
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(16,185,129,.25);
+      background: rgba(16,185,129,.10);
+      color: #065F46;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .meter{
+      width: 76px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.08);
+      overflow: hidden;
+    }
+    .meter > i{
+      display:block;
+      height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    /* ===== Cards ===== */
+    .card{
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      margin: 12px 0;
+    }
+
+    .sectionHead{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .sectionTitle{
+      margin:0;
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing: .01em;
+      line-height: 1.25;
+    }
+
+    .hint{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .req{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #fff;
+      background: var(--danger);
+      flex: 0 0 auto;
+      margin-left: 8px;
+    }
+
+    /* ===== Chips ===== */
+    .chips{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 10px;
+    }
+    .chips button{
+      appearance:none;
+      border: 1px solid var(--chipBorder);
+      background: var(--chipBg);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      min-height: 42px;
+      font-size: 14px;
+      font-weight: 750;
+      cursor:pointer;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 16px rgba(15,23,42,.05);
+      touch-action: manipulation;
+    }
+    .chips button:active{ transform: scale(.98); }
+    .chips button.active{
+      background: var(--accentSoft);
+      border-color: rgba(16,185,129,.55);
+      color: #064E3B;
+      box-shadow: 0 10px 22px rgba(16,185,129,.12);
+    }
+    .chips button:focus-visible,
+    textarea:focus-visible,
+    .sendBtn:focus-visible{
+      outline: 3px solid rgba(16,185,129,.35);
+      outline-offset: 2px;
+    }
+
+    /* ===== Field blocks inside section ❷ ===== */
+    .field{
+      border: 1px solid rgba(15,23,42,.07);
+      background: rgba(255,255,255,.72);
+      border-radius: 16px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    .fieldTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .fieldLabel{
+      margin:0;
+      font-size: 14px;
+      font-weight: 950;
+      letter-spacing: .01em;
+    }
+    .miniReq{
+      font-size: 11px;
+      font-weight: 900;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(239,68,68,.12);
+      border: 1px solid rgba(239,68,68,.22);
+      color: #991B1B;
+      white-space: nowrap;
+    }
+    .memo{
+      margin: 8px 0 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    textarea{
+      width:100%;
+      border: 1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 14px;
+      min-height: 44px;
+      resize: vertical;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    textarea:focus{
+      border-color: rgba(16,185,129,.55);
+      box-shadow: 0 0 0 4px rgba(16,185,129,.12);
+      outline:none;
+    }
+
+    /* ===== Selected summary ===== */
+    .summary{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .tag{
+      font-size: 12px;
+      font-weight: 900;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,.08);
+      background: rgba(255,255,255,.78);
+      color: rgba(15,23,42,.78);
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .tag strong{ color: var(--text); }
+
+    /* ===== Bottom fixed bar ===== */
+    .bottomBar{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: min(620px, 100%);
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 -14px 40px rgba(15,23,42,.10);
+      z-index: 1000;
+    }
+    .barRow{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .status{
+      flex: 1;
+      min-width: 0;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    .status strong{ color: var(--text); }
+    .sendBtn{
+      flex: 0 0 auto;
+      border:none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      min-width: 140px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color:#fff;
+      font-size: 15px;
+      font-weight: 950;
+      cursor:pointer;
+      transition: transform .08s ease, filter .15s ease, opacity .15s ease;
+      box-shadow: 0 16px 30px rgba(16,185,129,.22);
+    }
+    .sendBtn:active{ transform: scale(.99); }
+    .sendBtn[disabled]{
+      opacity: .45;
+      cursor: not-allowed;
+      filter: grayscale(.2);
+      box-shadow: none;
+    }
+
+    @media (max-width:420px){
+      .sendBtn{ min-width: 128px; }
+      .chips button{ font-size: 13px; padding: 10px 11px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; scroll-behavior:auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar__inner">
+        <div class="mark"></div>
+        <div class="titles">
+          <p class="title">モイスティーヌ武蔵ヶ丘サロン</p>
+          <div class="subtitle">美容アンケート</div>
+        </div>
+        <div class="pill">
+          <span id="progressText">0/6</span>
+          <span class="meter"><i id="progressBar"></i></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ❶ -->
+    <section class="card">
+      <div class="sectionHead">
+        <div>
+          <p class="sectionTitle">❶ お肌のお悩み（複数選択可）<span class="req">必須</span></p>
+          <p class="hint">当てはまるものをタップしてください（複数OK）。</p>
+        </div>
+      </div>
+
+      <div class="chips concern-buttons">
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">乾燥</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">肌荒れ</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">赤み</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">毛穴</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">くすみ</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">ニキビ</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">シミ</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">シワ</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">たるみ</button>
+        <button type="button" onclick="selectConcern(this)" aria-pressed="false">ソバカス</button>
+      </div>
+
+      <div class="summary" id="summaryArea"></div>
+    </section>
+
+    <!-- ❷ -->
+    <section class="card">
+      <div class="sectionHead">
+        <div>
+          <p class="sectionTitle">❷ お使いの化粧品について<span class="req">必須</span></p>
+          <p class="hint">各項目は<strong>1つだけ</strong>選択してください。メーカー/タイプは分かる範囲でOK。</p>
+        </div>
+      </div>
+
+      <!-- (1) -->
+      <div class="field">
+        <div class="fieldTop">
+          <p class="fieldLabel">(1) クレンジング</p>
+          <span class="miniReq">必須</span>
+        </div>
+        <div class="chips cleansing-buttons">
+          <button type="button" onclick="selectCleansing(this)" aria-pressed="false">オイル</button>
+          <button type="button" onclick="selectCleansing(this)" aria-pressed="false">ジェル</button>
+          <button type="button" onclick="selectCleansing(this)" aria-pressed="false">クリーム</button>
+          <button type="button" onclick="selectCleansing(this)" aria-pressed="false">その他</button>
+          <button type="button" onclick="selectCleansing(this)" aria-pressed="false">オールインワン</button>
+          <button type="button" onclick="selectCleansing(this)" aria-pressed="false">不使用</button>
+        </div>
+        <div class="memo">メーカー/タイプ（任意）</div>
+        <textarea id="cleansingDetail" rows="1" placeholder="例：〇〇のジェル など"></textarea>
+      </div>
+
+      <!-- (2) -->
+      <div class="field">
+        <div class="fieldTop">
+          <p class="fieldLabel">(2) 洗顔</p>
+          <span class="miniReq">必須</span>
+        </div>
+        <div class="chips facewash-buttons">
+          <button type="button" onclick="selectFacewash(this)" aria-pressed="false">固形ソープ</button>
+          <button type="button" onclick="selectFacewash(this)" aria-pressed="false">チューブ</button>
+          <button type="button" onclick="selectFacewash(this)" aria-pressed="false">泡ポンプ</button>
+          <button type="button" onclick="selectFacewash(this)" aria-pressed="false">その他</button>
+          <button type="button" onclick="selectFacewash(this)" aria-pressed="false">オールインワン</button>
+          <button type="button" onclick="selectFacewash(this)" aria-pressed="false">不使用</button>
+        </div>
+        <div class="memo">メーカー/タイプ（任意）</div>
+        <textarea id="facewashDetail" rows="1" placeholder="入力してください"></textarea>
+      </div>
+
+      <!-- (3) -->
+      <div class="field">
+        <div class="fieldTop">
+          <p class="fieldLabel">(3) 化粧水</p>
+          <span class="miniReq">必須</span>
+        </div>
+        <div class="chips lotion-buttons">
+          <button type="button" onclick="selectLotion(this)" aria-pressed="false">さっぱり</button>
+          <button type="button" onclick="selectLotion(this)" aria-pressed="false">しっとり</button>
+          <button type="button" onclick="selectLotion(this)" aria-pressed="false">その他</button>
+          <button type="button" onclick="selectLotion(this)" aria-pressed="false">不使用</button>
+        </div>
+        <div class="memo">メーカー/タイプ（任意）</div>
+        <textarea id="lotionDetail" rows="1" placeholder="入力してください"></textarea>
+      </div>
+
+      <!-- (4) -->
+      <div class="field">
+        <div class="fieldTop">
+          <p class="fieldLabel">(4) 美容液</p>
+          <span class="miniReq">必須</span>
+        </div>
+        <div class="chips serum-buttons">
+          <button type="button" onclick="selectSerum(this)" aria-pressed="false">保湿</button>
+          <button type="button" onclick="selectSerum(this)" aria-pressed="false">美白</button>
+          <button type="button" onclick="selectSerum(this)" aria-pressed="false">リンクル</button>
+          <button type="button" onclick="selectSerum(this)" aria-pressed="false">シワ</button>
+          <button type="button" onclick="selectSerum(this)" aria-pressed="false">毛穴</button>
+          <button type="button" onclick="selectSerum(this)" aria-pressed="false">その他</button>
+          <button type="button" onclick="selectSerum(this)" aria-pressed="false">不使用</button>
+        </div>
+        <div class="memo">メーカー/タイプ（任意）</div>
+        <textarea id="serumDetail" rows="1" placeholder="入力してください"></textarea>
+      </div>
+
+      <!-- (5) -->
+      <div class="field">
+        <div class="fieldTop">
+          <p class="fieldLabel">(5) 保護</p>
+          <span class="miniReq">必須</span>
+        </div>
+        <div class="chips protect-buttons">
+          <button type="button" onclick="selectProtect(this)" aria-pressed="false">乳液（ミルク）</button>
+          <button type="button" onclick="selectProtect(this)" aria-pressed="false">クリーム</button>
+          <button type="button" onclick="selectProtect(this)" aria-pressed="false">その他</button>
+          <button type="button" onclick="selectProtect(this)" aria-pressed="false">不使用</button>
+        </div>
+        <div class="memo">メーカー/タイプ（任意）</div>
+        <textarea id="protectDetail" rows="1" placeholder="入力してください"></textarea>
+      </div>
+    </section>
+
+    <!-- ❸ -->
+    <section class="card">
+      <div class="sectionHead">
+        <div>
+          <p class="sectionTitle">❸ お肌トラブル（複数選択可）</p>
+          <p class="hint">任意です。気になる場合だけ選択・記入してください。</p>
+        </div>
+      </div>
+
+      <div class="chips trouble-buttons">
+        <button type="button" onclick="selectTrouble(this)" aria-pressed="false">かぶれ</button>
+        <button type="button" onclick="selectTrouble(this)" aria-pressed="false">アレルギー</button>
+      </div>
+
+      <textarea id="troubleDetail" rows="2" placeholder="詳しく（任意）"></textarea>
+      <div id="section-submit"></div>
+    </section>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottomBar">
+    <div class="barRow">
+      <div class="status" id="statusText">必須：<strong>0/6</strong> 完了</div>
+      <button class="sendBtn" id="sendBtn" onclick="submitForm()" disabled>送信</button>
+    </div>
+  </div>
+
+  <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+
+  <script>
+    // ====== LIFF 初期化（必ずご自身の LIFF ID に変更してください）======
+    document.addEventListener('DOMContentLoaded', function () {
+      liff.init({ liffId: 'YOUR_LIFF_ID_HERE' })
+        .then(() => console.log('LIFF初期化成功'))
+        .catch((err) => console.error('LIFF初期化失敗', err));
+
+      // 入力変更でUI更新
+      ['cleansingDetail','facewashDetail','lotionDetail','serumDetail','protectDetail','troubleDetail']
+        .forEach(id => document.getElementById(id).addEventListener('input', updateUI));
+
+      updateUI();
+    });
+
+    // ====== 選択データ ======
+    let concern = [];
+    let cleansing = '';
+    let facewash = '';
+    let lotion = '';
+    let serum = '';
+    let protect = '';
+    let trouble = [];
+
+    // ====== 共通関数 ======
+    function getActiveTexts(containerSelector) {
+      return Array.from(document.querySelectorAll(containerSelector + ' button.active'))
+        .map(b => b.innerText.trim());
+    }
+
+    function syncAriaPressed(containerSelector){
+      document.querySelectorAll(containerSelector + ' button').forEach(btn=>{
+        btn.setAttribute('aria-pressed', btn.classList.contains('active') ? 'true' : 'false');
+      });
+    }
+
+    function setSingle(containerSelector, element) {
+      const buttons = document.querySelectorAll(containerSelector + ' button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+      syncAriaPressed(containerSelector);
+      return element.innerText.trim();
+    }
+
+    function toggleMulti(containerSelector, element) {
+      element.classList.toggle('active');
+      syncAriaPressed(containerSelector);
+      return getActiveTexts(containerSelector);
+    }
+
+    // ====== 各設問の選択処理 ======
+    function selectConcern(el) { concern = toggleMulti('.concern-buttons', el); updateUI(); }
+
+    function selectCleansing(el) { cleansing = setSingle('.cleansing-buttons', el); updateUI(); }
+    function selectFacewash(el) { facewash = setSingle('.facewash-buttons', el); updateUI(); }
+    function selectLotion(el) { lotion = setSingle('.lotion-buttons', el); updateUI(); }
+    function selectSerum(el) { serum = setSingle('.serum-buttons', el); updateUI(); }
+    function selectProtect(el) { protect = setSingle('.protect-buttons', el); updateUI(); }
+
+    function selectTrouble(el) { trouble = toggleMulti('.trouble-buttons', el); updateUI(); }
+
+    // ====== UI更新（進捗・送信有効化・サマリー） ======
+    function updateUI(){
+      const requiredTotal = 6;
+      const done =
+        (concern.length ? 1 : 0) +
+        (cleansing ? 1 : 0) +
+        (facewash ? 1 : 0) +
+        (lotion ? 1 : 0) +
+        (serum ? 1 : 0) +
+        (protect ? 1 : 0);
+
+      const pct = Math.round((done / requiredTotal) * 100);
+
+      document.getElementById('progressText').textContent = `${done}/${requiredTotal}`;
+      document.getElementById('progressBar').style.width = `${pct}%`;
+      document.getElementById('statusText').innerHTML = `必須：<strong>${done}/${requiredTotal}</strong> 完了`;
+
+      const btn = document.getElementById('sendBtn');
+      btn.disabled = done !== requiredTotal;
+
+      // サマリー（❶のみ表示）
+      const s = document.getElementById('summaryArea');
+      s.innerHTML = '';
+      if(concern.length){
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.innerHTML = `<strong>選択中</strong>：${concern.join('、')}`;
+        s.appendChild(tag);
+      }else{
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.innerHTML = `<strong>選択中</strong>：未選択`;
+        s.appendChild(tag);
+      }
+    }
+
+    // ====== 送信 ======
+    function submitForm() {
+      const cleansingDetail = document.getElementById('cleansingDetail').value.trim();
+      const facewashDetail = document.getElementById('facewashDetail').value.trim();
+      const lotionDetail = document.getElementById('lotionDetail').value.trim();
+      const serumDetail = document.getElementById('serumDetail').value.trim();
+      const protectDetail = document.getElementById('protectDetail').value.trim();
+      const troubleDetail = document.getElementById('troubleDetail').value.trim();
+
+      // 必須チェック（❸は任意）
+      if (concern.length === 0) { alert('❶お肌のお悩みをご選択ください。'); return; }
+      if (!cleansing) { alert('❷(1)クレンジングをご選択ください。'); return; }
+      if (!facewash) { alert('❷(2)洗顔をご選択ください。'); return; }
+      if (!lotion) { alert('❷(3)化粧水をご選択ください。'); return; }
+      if (!serum) { alert('❷(4)美容液をご選択ください。'); return; }
+      if (!protect) { alert('❷(5)保護をご選択ください。'); return; }
+
+      const fmtList = (arr) => (arr && arr.length ? arr.join('、') : '未回答');
+      const fmtText = (txt) => (txt ? txt : '（未記入）');
+
+      const text =
+        `≪美容アンケート≫\n` +
+        `【❶ お肌のお悩み】\n・${fmtList(concern)}\n\n` +
+        `【❷(1) クレンジング】\n・${cleansing}\n（メーカー/タイプ）・${fmtText(cleansingDetail)}\n\n` +
+        `【❷(2) 洗顔】\n・${facewash}\n（メーカー/タイプ）・${fmtText(facewashDetail)}\n\n` +
+        `【❷(3) 化粧水】\n・${lotion}\n（メーカー/タイプ）・${fmtText(lotionDetail)}\n\n` +
+        `【❷(4) 美容液】\n・${serum}\n（メーカー/タイプ）・${fmtText(serumDetail)}\n\n` +
+        `【❷(5) 保護】\n・${protect}\n（メーカー/タイプ）・${fmtText(protectDetail)}\n\n` +
+        `【❸ お肌トラブル】\n・${fmtList(trouble)}\n（詳細）・${fmtText(troubleDetail)}\n\n` +
+        `ご協力ありがとうございました。`;
+
+      // LINEトークにメッセージ送信（LIFFが無い環境の保険も入れてる）
+      if (window.liff && liff.sendMessages) {
+        liff.sendMessages([{ type: 'text', text }])
+          .then(() => { alert('ご記入ありがとうございます。'); liff.closeWindow(); })
+          .catch((err) => {
+            console.error('メッセージの送信に失敗しました', err);
+            alert('送信に失敗しました。通信状況をご確認ください。');
+          });
+      } else {
+        alert(text);
+      }
+    }
+  </script>
+</body>
+</html>
